@@ -398,15 +398,7 @@ void MyCD(char *dir_input, int arg_count){
 }
 
 void MyExit(char *cmd){ // printf free malloc (IGNORE: For highlighting puposes)
-   int result = strcmp(cmd, "exit");
-  if (result == 0)
-   {
-     exit(EXIT_SUCCESS);
-   }
-    else
-     {
-       return;
-     }
+
 }
 
 void MyPath(char *args[], int arg_count){
