@@ -82,7 +82,7 @@ char *MYALIAS[MAX]; //alias variable
 const char *ORIG_PATH_VAR; //The original PATH contents
 char *prompt;
 
-int EXIT_CALLED = 0;//Functions seem to treat this as a global variable -DM
+int exitCmd = 0;//Functions seem to treat this as a global variable -DM
 
 
 int main(int argc, char *argv[]){
@@ -241,7 +241,7 @@ void ExecuteCommands(char *command, char *full_line){
                if(strcmp(command, "cd") == 0)
                        MyCD(args[0], arg_count);
                else if(strcmp(command, "exit") == 0)
-                       EXIT_CALLED = 1;
+                       exitCmd = 1;
                else if(strcmp(command, "path") == 0)
                        MyPath(args, arg_count);
                else if(strcmp(command, "myhistory") == 0)
@@ -330,7 +330,7 @@ void InteractiveMode(){
        prompt[strlen(prompt)-1] = '\0';
    }
 
-       while(1){
+       while(exitCmd = 0){
                char *str = (char*)malloc(MAX);
 
                printf("%s> ", prompt);
@@ -363,7 +363,7 @@ void InteractiveMode(){
                free(str);
 
                // if exit was selected
-               if(EXIT_CALLED) {
+               if(exitCmd) {
                    free(prompt);
                    MyExit(0);
                }
@@ -397,8 +397,9 @@ void MyCD(char *dir_input, int arg_count){
    return;
 }
 
-void MyExit(char *cmd){ // printf free malloc (IGNORE: For highlighting puposes)
-
+void MyExit(char *cmd){
+	exitCmd = 1;
+	return;
 }
 
 void MyPath(char *args[], int arg_count){
