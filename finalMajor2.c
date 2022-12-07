@@ -33,6 +33,23 @@ int alias_count = 0;  //global variable for MyAlias function
 pid_t ppid; //gloabal parent id
 pid_t cpid; //global child id
 
+//============================================================
+typedef struct History{		//typedef struct history
+	struct History *next;
+	char *com;
+}History;
+
+typedef struct List{	//typedef struct List
+    	History *top;
+	unsigned int count;
+}List;
+
+bool isEmpty(List *list){
+if(list->count == 0)
+  return true;	//return true if empty, else false
+else
+      return false;
+}
 //====================================================
 void InteractiveMode();
 void BatchMode(char *file);
@@ -108,42 +125,37 @@ int main(int argc, char *argv[]){
 
        return 0;
 }
-//HEHEHEHEHE
+
 void BatchMode(char *file){
 
-       FILE *fptr = fopen(file, "r");
-   //error checking for fopen function
-   if(fptr == NULL) {
-               fprintf(stderr, "Error: Batch file not found or cannot be opened\n");
+       FILE *filePtr = fopen(file, "r");
+   if(filePtr == 0) {
+               fprintf(stderr, "BATCH FILE UNAVAILABLE!\n");
                MyExit(0);
    }
 
-   char *batch_command_line = (char *)malloc(MAX);
-   memset(batch_command_line, '\0', sizeof(batch_command_line));
+   char *batchCmd = (char *)malloc(MAX);
+   memset(batchCmd, '\0', sizeof(batchCmd));
 
 
-   //reads a line from fptr, stores it into batch_command_line
-   while(fgets(batch_command_line, MAX, fptr)){
-       //remove trailing newline
-       batch_command_line[strcspn(batch_command_line, "\n")] = 0;
-       printf("Processing batchfile input: %s\n", batch_command_line);
+   //reads and stores command
+   while(fgets(batchCmd, MAX, filePtr)){
+       batchCmd[strcspn(batchCmd, "\n")] = 0;
+       printf("Reading input: %s\n", batchCmd);
 
-       //parse batch_command_line to set the array COMMANDS[]
-       //for example: COMMANDS[0]="ls -a -l", COMMANDS[1]="who", COMMANDS[2]="date"
-       int cmd_count = ParseCommands(batch_command_line);
+       
+       int commandCount = ParseCommands(batchCmd);//parses batchCmd
 
-       //execute commands one by one
-       for(int i=0; i< cmd_count; i++){
-           char *temp = strdup(COMMANDS[i]); //for example: ls -a -l
-           temp = strtok(temp, " "); //get the command
-           ExecuteCommands(temp, COMMANDS[i]);
-           //free temp
-                       free(temp);
+      
+       for(int i=0; i< commandCount; i++){
+           char *tempVal = strdup(COMMANDS[i]); 
+           tempVal = strtok(tempVal, " "); //retrieves commands to execute
+           ExecuteCommands(tempVal, COMMANDS[i]);
+                       free(tempVal);//frees tempVal
        }
    }
-   //free batch_command_line, and close fptr
-       free(batch_command_line);
-       fclose(fptr);
+       free(batchCmd);
+       fclose(filePtr);
 }
 
 int ParseCommands(char *str){
