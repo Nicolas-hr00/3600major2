@@ -33,23 +33,6 @@ int alias_count = 0;  //global variable for MyAlias function
 pid_t ppid; //gloabal parent id
 pid_t cpid; //global child id
 
-//============================================================
-typedef struct History{		//typedef struct history
-	struct History *next;
-	char *com;
-}History;
-
-typedef struct List{	//typedef struct List
-    	History *top;
-	unsigned int count;
-}List;
-
-bool isEmpty(List *list){
-if(list->count == 0)
-  return true;	//return true if empty, else false
-else
-      return false;
-}
 //====================================================
 void InteractiveMode();
 void BatchMode(char *file);
