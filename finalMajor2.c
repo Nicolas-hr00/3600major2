@@ -392,8 +392,21 @@ void MyCD(char *dir_input, int arg_count){
    return;
 }
 
-void MyExit(char *cmd){
+void MyExit(char *str){
+    ParseCommands(str);
+    int cmd_num = ParseCommands(str);
+    if (cmd_num <=1){
+        return;
+    }
+    else{
+        for(int i = 0; i <= cmd_num; i++){
+            char *tempVal = strdup(COMMANDS[i]); 
+           tempVal = strtok(tempVal, " "); //retrieves commands to execute
+           ExecuteCommands(tempVal, COMMANDS[i]);
+        }
+    }
 	exitCmd = 1;
+	exit(EXIT_SUCCESS);
 	return;
 }
 
