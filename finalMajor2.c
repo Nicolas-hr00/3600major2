@@ -59,7 +59,7 @@ int ParseArgs(char *full_line, char *args[]); //e.g., "ls -a -l" is converted to
 void ExecuteCommands(char *command, char *full_line);
 
 void MyCD(char *dir_input, int arg_count);
-void MyExit(char *cmd);
+void MyExit(char *str);
 void MyPath(char *args[], int arg_count);
 void MyHistory(char *args[], int arg_count);
 
@@ -236,7 +236,7 @@ void ExecuteCommands(char *command, char *full_line){
                if(strcmp(command, "cd") == 0)
                        MyCD(args[0], arg_count);
                else if(strcmp(command, "exit") == 0)
-                       exitCmd = 1;
+                       MyExit(command);
                else if(strcmp(command, "path") == 0)
                        MyPath(args, arg_count);
                else if(strcmp(command, "myhistory") == 0)
